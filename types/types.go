@@ -21,12 +21,12 @@ const (
 )
 
 type HLS struct {
-	ExtM3u        string         // 协议根元素，在协议文件的第一行
-	PlayListType  PlayListType   // 协议类型
-	ExtXStreamInf []HlsStreamInf // 包含多个playlist列表，可以选择视频清晰度
-	Extinf        []HlsExtInf    // 视频流地址
-	Extkey        []HlsExtKey    // 加密密钥队列
-	Endlist       string         // 文件结束标示
+	ExtM3u       string         // 协议根元素，在协议文件的第一行
+	PlayListType PlayListType   // 协议类型
+	ExtStreamInf []HlsStreamInf // 包含多个playlist列表，可以选择视频清晰度
+	Extinf       []HlsExtInf    // 视频流地址
+	Extkey       []HlsExtKey    // 加密密钥队列
+	Endlist      string         // 文件结束标示
 }
 
 type HlsStreamInf struct {
@@ -39,7 +39,7 @@ type HlsStreamInf struct {
 
 type HlsExtInf struct {
 	Index        int
-	Duration     float32 // 每个切片的实际时长。单位：秒
+	Duration     float64 // 每个切片的实际时长。单位：秒
 	Title        string  // 片的描述
 	Url          string  // 每片的链接
 	EncryptIndex int     // 当前链接在密钥队列的索引。值为-1 视频没有加密不需要密钥

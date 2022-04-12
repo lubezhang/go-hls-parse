@@ -70,12 +70,44 @@ func TestDestructureParams(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	params1, err := DestructureParams("#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1064000")
-	if err == nil {
+	params1, err1 := DestructureParams("#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1064000")
+	if err1 == nil {
 		assetObj.Equal(len(params1.Map), 2)
 		assetObj.Equal(params1.Map["PROGRAM-ID"], "1")
 		assetObj.Equal(params1.Map["BANDWIDTH"], "1064000")
 	} else {
 		t.Errorf(err.Error())
 	}
+
+	tag1 := "#EXT-X-KEY:METHOD=AES-128,URI=\"https://ts4.chinalincoln.com:9999/20210419/OvroTYry/1000kb/hls/key.key\""
+	params2, err2 := DestructureParams(tag1)
+	if err2 == nil {
+		assetObj.Equal(len(params2.Map), 2)
+		assetObj.Equal(params2.Map["METHOD"], "AES-128")
+		assetObj.Equal(params2.Map["URI"], "https://ts4.chinalincoln.com:9999/20210419/OvroTYry/1000kb/hls/key.key")
+	} else {
+		t.Errorf(err2.Error())
+	}
+}
+
+func TestJoinUrl(t *testing.T) {
+	assetObj := assert.New(t)
+	url1, _ := JoinUrl("1000kbps.m3u8", "http://www.baidu.com")
+	assetObj.Equal(url1, "http://www.baidu.com/1000kbps.m3u8")
+
+	url2, _ := JoinUrl("1000kbps.m3u8", "http://www.baidu.com/path1/path2")
+	assetObj.Equal(url2, "http://www.baidu.com/path1/path2/1000kbps.m3u8")
+
+	url3, _ := JoinUrl("/1000kbps.m3u8", "http://www.baidu.com/path1/path2")
+	assetObj.Equal(url3, "http://www.baidu.com/1000kbps.m3u8")
+
+	url4, _ := JoinUrl("http://www.baidu.com/1000kbps.m3u8", "http://www.2baidu.com/path1/path2")
+	assetObj.Equal(url4, "http://www.baidu.com/1000kbps.m3u8")
+
+	url5, _ := JoinUrl("/1000kbps.m3u8", "http://www.baidu.com/path1/path2/a.html")
+	assetObj.Equal(url5, "http://www.baidu.com/1000kbps.m3u8")
+
+	// TODO 用例待完善
+	// url6, _ := JoinUrl("1000kbps.m3u8", "http://www.baidu.com/path1/path2/a.html")
+	// assetObj.Equal(url6, "http://www.baidu.com/path1/path2/1000kbps.m3u8")
 }

@@ -3,6 +3,8 @@ package common
 import (
 	"fmt"
 	"hls-parse/types"
+	"net/url"
+	"path"
 	"regexp"
 	"strconv"
 	"strings"
@@ -10,6 +12,11 @@ import (
 
 func StringToInt(str string) (result int, err error) {
 	result, err = strconv.Atoi(str)
+	return
+}
+
+func StringToFloat64(str string) (result float64, err error) {
+	result, err = strconv.ParseFloat(str, 32)
 	return
 }
 
@@ -65,7 +72,10 @@ func DestructureParams(protoLine string) (params types.ProtocolParams, err error
 		return types.ProtocolParams{}, fmt.Errorf("没有参数")
 	}
 	strParams := strings.TrimSpace(list[1])
-	// TODO 去掉单引号和双引号
+	// 去掉参数中多余的单引号和双引号
+	re1, _ := regexp.Compile("['\"]")
+	strParams = re1.ReplaceAllString(strParams, "")
+
 	arrParams := strings.Split(strParams, ",") // 拆分参数字符串
 	params.Map = make(map[string]string)
 
@@ -78,7 +88,34 @@ func DestructureParams(protoLine string) (params types.ProtocolParams, err error
 		}
 	}
 
-	fmt.Println(arrParams)
+	err = nil
+	return
+}
+
+func JoinUrl(resourseUrl string, baseUrl string) (result string, err error) {
+	pUrl, err := url.Parse(resourseUrl)
+	if err != nil {
+		return "", err
+	}
+
+	if pUrl.Scheme == "" { // 是否为完整的http链接
+		bUrl, _ := url.Parse(baseUrl)
+		prefix := bUrl.Scheme + "://" + bUrl.Host
+
+		reg, _ := regexp.Compile("^/")
+		if reg.MatchString(resourseUrl) { // 是否为相对路径
+			result = prefix + resourseUrl
+		} else {
+			bPath := bUrl.Path
+			if bPath == "" {
+				bPath = "/"
+			}
+			result = prefix + path.Join(bPath, pUrl.String())
+		}
+	} else {
+		result = resourseUrl
+	}
+
 	err = nil
 	return
 }
