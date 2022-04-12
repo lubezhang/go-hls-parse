@@ -1,8 +1,8 @@
 package protocol
 
 import (
-	"hls-parse/common"
-	"hls-parse/types"
+	"github.com/lubezhang/hls-parse/common"
+	"github.com/lubezhang/hls-parse/types"
 )
 
 /**

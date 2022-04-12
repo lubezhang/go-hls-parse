@@ -2,12 +2,13 @@ package common
 
 import (
 	"fmt"
-	"hls-parse/types"
 	"net/url"
 	"path"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/lubezhang/hls-parse/types"
 )
 
 func StringToInt(str string) (result int, err error) {

@@ -1,9 +1,10 @@
 package protocol
 
 import (
-	"hls-parse/types"
 	"math"
 	"testing"
+
+	"github.com/lubezhang/hls-parse/types"
 
 	"github.com/stretchr/testify/assert"
 )

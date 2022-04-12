@@ -2,9 +2,10 @@ package common
 
 import (
 	"fmt"
-	"hls-parse/types"
 	"os"
 	"testing"
+
+	"github.com/lubezhang/hls-parse/types"
 
 	"github.com/stretchr/testify/assert"
 )

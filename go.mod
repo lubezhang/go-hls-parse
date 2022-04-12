@@ -1,4 +1,4 @@
-module hls-parse
+module github.com/lubezhang/hls-parse
 
 go 1.18
 
