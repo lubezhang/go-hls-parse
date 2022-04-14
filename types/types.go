@@ -4,9 +4,10 @@ type PlayListType int
 type ProtocolTagType int
 
 const (
-	PlayListTypeMaster PlayListType = iota
-	PlayListTypeVod
-	PlayListTypeLive
+	PlayListTypeNone   PlayListType = iota // 未知
+	PlayListTypeMaster                     // 主文件
+	PlayListTypeVod                        // 视频回放
+	PlayListTypeLive                       // 直播
 )
 
 const (
@@ -18,6 +19,7 @@ const (
 	ProtocolTagKey                                 // 视频流加密密钥
 	ProtocolTagValue                               // 协议对应的数据
 	ProtocolTagNil                                 // 没有匹配到协议标签
+	ProtocolTagExtPrivinf
 )
 
 type HLS struct {
@@ -27,6 +29,16 @@ type HLS struct {
 	Extinf       []HlsExtInf    // 视频流地址
 	Extkey       []HlsExtKey    // 加密密钥队列
 	Endlist      string         // 文件结束标示
+}
+
+// 是否为主文件
+func (hls *HLS) IsMaster() bool {
+	return hls.PlayListType == PlayListTypeMaster
+}
+
+// 视频回放
+func (hls *HLS) IsVod() bool {
+	return hls.PlayListType == PlayListTypeVod
 }
 
 type HlsStreamInf struct {

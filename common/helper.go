@@ -53,6 +53,8 @@ func ExtractTag(protoLine string) (result types.ProtocolTagType) {
 			result = types.ProtocolTagKey
 		case "#EXT-X-ENDLIST":
 			result = types.ProtocolTagEndlist
+		case "#EXT-X-PRIVINF":
+			result = types.ProtocolTagExtPrivinf
 		default:
 			result = types.ProtocolTagNil
 		}

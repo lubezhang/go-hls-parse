@@ -12,7 +12,7 @@ import (
 func Parse(strHls *string, baseUrl string) (result types.HLS, err error) {
 	arrHls, err := common.ProtocolStrToArray(strHls)
 	result = types.HLS{
-		PlayListType: types.PlayListTypeMaster,
+		PlayListType: types.PlayListTypeNone,
 	}
 	if err != nil {
 		return result, err
@@ -32,17 +32,29 @@ func Parse(strHls *string, baseUrl string) (result types.HLS, err error) {
 			result.ExtStreamInf = append(result.ExtStreamInf, si)
 			i++
 		case types.ProtocolTagExtinf:
-			ei := parseExtInf(v, arrHls[i+1])
+			// 兼容#EXT-X-PRIVINF标签
+			step := 1
+			if common.ExtractTag(arrHls[i+1]) == types.ProtocolTagExtPrivinf {
+				step = 2
+			}
+
+			ei := parseExtInf(v, arrHls[i+step])
 			ei.Url, _ = common.JoinUrl(ei.Url, baseUrl)
 			ei.EncryptIndex = len(result.Extkey) - 1
 			result.Extinf = append(result.Extinf, ei)
-			i++
+			i = i + step
 		case types.ProtocolTagKey:
 			ek := parseExtKey(v)
 			ek.Uri, _ = common.JoinUrl(ek.Uri, baseUrl)
 			result.Extkey = append(result.Extkey, ek)
 		}
 	}
+
+	// 如果文件有结束标签，则认为是VOD格式
+	if common.ExtractTag(arrHls[len(arrHls)-1]) == types.ProtocolTagEndlist {
+		result.PlayListType = types.PlayListTypeVod
+	}
+
 	err = nil
 	return
 }
