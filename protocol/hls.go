@@ -1,6 +1,8 @@
 package protocol
 
 import (
+	"errors"
+
 	"github.com/lubezhang/hls-parse/common"
 	"github.com/lubezhang/hls-parse/types"
 )
@@ -10,6 +12,9 @@ import (
  * @return HLS
  */
 func Parse(strHls *string, baseUrl string) (result types.HLS, err error) {
+	if (strHls == nil) || (len(*strHls) == 0) {
+		return result, errors.New("协议为空")
+	}
 	arrHls, err := common.ProtocolStrToArray(strHls)
 	result = types.HLS{
 		PlayListType: types.PlayListTypeNone,
