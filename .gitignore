@@ -1,1 +1,2 @@
-/testData/test.mp4
+/testData/*.mp4
+/.vscode/*.log
