@@ -4,7 +4,7 @@ type PlayListType int
 type ProtocolTagType int
 
 const (
-	PlayListTypeNone   PlayListType = iota // 未知
+	PlayListTypeNone   PlayListType = iota // 未知，未被支持的类型
 	PlayListTypeMaster                     // 主文件
 	PlayListTypeVod                        // 视频回放
 	PlayListTypeLive                       // 直播

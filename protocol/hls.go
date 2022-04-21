@@ -58,6 +58,8 @@ func Parse(strHls *string, baseUrl string) (result types.HLS, err error) {
 	// 如果文件有结束标签，则认为是VOD格式
 	if common.ExtractTag(arrHls[len(arrHls)-1]) == types.ProtocolTagEndlist {
 		result.PlayListType = types.PlayListTypeVod
+	} else if result.ExtStreamInf != nil && len(result.ExtStreamInf) > 0 { // 如果有视频流数据，则任务是主文件
+		result.PlayListType = types.PlayListTypeMaster
 	}
 
 	err = nil
@@ -74,7 +76,7 @@ func parsePlayListType(protocolLine string) (result types.PlayListType) {
 		case "live":
 			result = types.PlayListTypeLive
 		default:
-			result = types.PlayListTypeMaster
+			result = types.PlayListTypeNone
 		}
 	}
 	return
