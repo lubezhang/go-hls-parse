@@ -67,7 +67,7 @@ func parseHlsVod(hlsBase *HlsBase) (result HlsVod, err error) {
 
 			ei := parseExtInf(line, orgHls[i+step])
 			ei.Url, _ = common.JoinUrl(ei.Url, hlsBase.baseUrl)
-			// ei.EncryptIndex = len(result.Extkey) - 1
+			ei.EncryptIndex = len(result.Extkeys) - 1
 			result.ExtInfs = append(result.ExtInfs, ei)
 			i = i + step
 		case types.ProtocolTagEndlist:
