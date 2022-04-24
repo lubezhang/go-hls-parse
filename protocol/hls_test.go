@@ -45,12 +45,16 @@ func TestHlsMasterParse(t *testing.T) {
 
 	var strHls = _getMasterString()
 
-	hlsBase, err := ParseString(&strHls, "https://www.baidu.com")
+	hlsBase, err := ParseString(&strHls, "https://www.baidu.com/path1/path2")
 	assetObj.Nil(err)
 	if err == nil {
 		if hlsBase.IsMaster() {
 			hlsMaster, _ := hlsBase.GetMaster()
 			assetObj.Equal(len(hlsMaster.StreamInfs), 4)
+			assetObj.Equal(hlsMaster.StreamInfs[0].Url, "https://www.baidu.com/path1/path2/1000kbps.m3u8")
+			assetObj.Equal(hlsMaster.StreamInfs[1].Url, "https://www.baidu.com/500kbps.m3u8")
+			assetObj.Equal(hlsMaster.StreamInfs[2].Url, "https://www.baidu.com/path1/250kbps.m3u8")
+			assetObj.Equal(hlsMaster.StreamInfs[3].Url, "https://www.baidu.com/path1/path2/path2/2000kbps.m3u8")
 		}
 	}
 

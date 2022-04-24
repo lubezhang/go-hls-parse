@@ -13,7 +13,8 @@ func ParseString(strHls *string, baseUrl string) (result HlsBase, err error) {
 	}
 	arrHls, err := common.ProtocolStrToArray(strHls)
 	result = HlsBase{
-		ExtM3u: arrHls[0],
+		ExtM3u:  arrHls[0],
+		baseUrl: baseUrl,
 	}
 	if err != nil {
 		return result, err
