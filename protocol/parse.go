@@ -75,5 +75,14 @@ func parseHlsVod(hlsBase *HlsBase) (result HlsVod, err error) {
 			result.Endlist = line
 		}
 	}
+	// 计算总时长
+	if len(result.ExtInfs) > 0 {
+		totalDuration := 0.0
+		for _, extInf := range result.ExtInfs {
+			totalDuration += extInf.Duration
+		}
+		result.Duration = int(totalDuration)
+	}
+
 	return
 }

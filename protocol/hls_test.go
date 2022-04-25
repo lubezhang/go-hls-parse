@@ -82,6 +82,7 @@ func TestHlsVodParse(t *testing.T) {
 			hlsVod, _ := hlsBase.GetVod()
 			assetObj.Equal(len(hlsVod.ExtInfs), 11)
 			assetObj.Equal(len(hlsVod.Extkeys), 2)
+			assetObj.Equal(hlsVod.Duration, 33)
 			assetObj.Equal(hlsVod.Endlist, "#EXT-X-ENDLIST")
 		}
 	}
